@@ -1,0 +1,34 @@
+a soldier making a last stand to 
+protect a point till support arives
+-----------------------
+models
+- player: 
+  - soldier
+  - ar
+  - sniper
+  - rpg
+
+- enemies: 
+  -riflemen
+  -snipers
+  -tanks
+
+- level assets
+  - ammo crate ( usable )
+  - military base buildings( broken )
+  - vehicles ( broken )
+  - gates ( broken )
+  - chopper( escape ending )
+
+- level setting 
+  - dessert
+---------------------------
+objective: survive 20 waves
+win: ( win cutscene: a shot of the chopper reaching the base 
+	next shot: the chopper landing and his armsman helping eliminate the remaining enemies as he rests
+	final shot: the player reciving a medal of honor as the audiance claps) 
+fail: ( death cutscene: "player is seen dead on top of a pile of bodies 
+	next scene: a zoom out shot of his armsmen carring a flag")
+
+
+	
