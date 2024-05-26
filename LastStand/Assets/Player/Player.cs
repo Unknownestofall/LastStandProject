@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] float Speed;
+    [SerializeField] enum PlayerState {walking, running}
+    [SerializeField] PlayerState state;
+
+    float _baseSpeed;
+    [SerializeField] float walkSpeed;
+    [SerializeField] float runSpeed;
+
     [SerializeField] float JumpForce;
 
     Rigidbody _rb;
@@ -18,25 +24,47 @@ public class Player : MonoBehaviour
     void Update()
     {
         PlayerFunctions();
+        stateTracker();
     }
     void PlayerFunctions() {
+        Movement();
+
+        if(Input.GetKeyDown(KeyCode.Space) && onGround()) { 
+            Jump();
+        }
+        if(Input.GetKey(KeyCode.LeftShift)) {
+            Run();
+        }else{
+            state = PlayerState.walking;
+        }
+    }
+    void stateTracker() {
+        switch (state) { 
+            case PlayerState.walking:
+                _baseSpeed = walkSpeed;
+                break;
+            case PlayerState.running:
+                _baseSpeed = runSpeed;
+                break;
+            default: return;
+        }
+    }
+    void Movement() {
         float hInput = Input.GetAxisRaw("Horizontal");
         float zInput = Input.GetAxisRaw("Vertical");
 
-        Vector3 movePlayer = Speed * Time.deltaTime * new Vector3(hInput, 0, zInput).normalized;
+        Vector3 movePlayer = _baseSpeed * Time.deltaTime * new Vector3(hInput, 0, zInput).normalized;
 
         transform.Translate(movePlayer);
-        if(Input.GetKeyDown(KeyCode.Space) && onGround()) { 
-            _rb.velocity = new Vector3(0, JumpForce);
-        }
     }
+    void Jump() => _rb.velocity = new Vector3(0, JumpForce);
+    void Run() => state = PlayerState.running;
     bool onGround() { 
         RaycastHit hit;
         if (Physics.Raycast(transform.position, Vector3.down, out hit, 1.1f)) {
             if (hit.transform.CompareTag("floor")) { 
                 return true;
             }
-        }
-        return false;
+        }return false;
     }
 }
