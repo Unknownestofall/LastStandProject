@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] enum PlayerState {walking, running}
+    [SerializeField] enum PlayerState { walking, running }
     [SerializeField] PlayerState state;
 
     float _baseSpeed;
@@ -13,6 +13,12 @@ public class Player : MonoBehaviour
 
     [SerializeField] float JumpForce;
 
+    [SerializeField] GameObject[] gunInventory;
+    [SerializeField] float gunSwitchTime;
+    float _canSwitchGuns = .25f;
+    [SerializeField] int curGunSelected;
+
+    Gun _gun;
     Rigidbody _rb;
     // Start is called before the first frame update
     void Start()
@@ -31,12 +37,22 @@ public class Player : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Space) && onGround()) { 
             Jump();
-        }
-        if(Input.GetKey(KeyCode.LeftShift)) {
+        }if(Input.GetKey(KeyCode.LeftShift)) {
             Run();
         }else{
             state = PlayerState.walking;
         }
+
+        switchWeaponSelected();
+        DisplayWeapon();
+
+        if (Input.GetMouseButton(0)) {
+            _gun = gunInventory[curGunSelected].GetComponent<Gun>();
+            _gun.shoot();
+        }if (Input.GetKeyDown(KeyCode.R)) { 
+            _gun.Reload();
+        }
+
     }
     void stateTracker() {
         switch (state) { 
@@ -58,7 +74,6 @@ public class Player : MonoBehaviour
         transform.Translate(movePlayer);
     }
     void Jump() => _rb.velocity = new Vector3(0, JumpForce);
-    void Run() => state = PlayerState.running;
     bool onGround() { 
         RaycastHit hit;
         if (Physics.Raycast(transform.position, Vector3.down, out hit, 1.1f)) {
@@ -66,5 +81,36 @@ public class Player : MonoBehaviour
                 return true;
             }
         }return false;
+    }
+    void Run() => state = PlayerState.running;
+    void switchWeaponSelected(){
+        Vector2 scrollWheelGunSwitch = Input.mouseScrollDelta.normalized;
+        if (canSwitchGuns()){ 
+            if(scrollWheelGunSwitch.y > 0) {
+                curGunSelected++;
+            }else if(scrollWheelGunSwitch.y < 0){ 
+                curGunSelected--;
+            }
+        }
+        if(curGunSelected < 0) { 
+            curGunSelected = 2;
+        }else if (curGunSelected > 2) {
+            curGunSelected = 0;
+        }
+    }
+    bool canSwitchGuns() { 
+        if(Time.time > _canSwitchGuns) { 
+            _canSwitchGuns = Time.time + gunSwitchTime;
+            return true;
+        }return false;
+    }
+    void DisplayWeapon() { 
+        for(int i = 0;i < gunInventory.Length;i++) { 
+            if(i == curGunSelected) {
+                gunInventory[curGunSelected].SetActive(true);
+            }else {
+                gunInventory[i].SetActive(false);
+            }
+        }
     }
 }
