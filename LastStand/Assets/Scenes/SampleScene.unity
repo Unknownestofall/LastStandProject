@@ -224,6 +224,8 @@ MonoBehaviour:
   range: 200
   FireRate: 3
   isExplosive: 0
+  rocketOBJ: {fileID: 0}
+  RocketPos: {fileID: 0}
 --- !u!1 &125181426
 GameObject:
   m_ObjectHideFlags: 0
@@ -757,6 +759,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1211897931}
   - {fileID: 53093340}
   - {fileID: 2004038227}
   - {fileID: 1074929753}
@@ -879,6 +882,39 @@ MonoBehaviour:
   range: 0
   FireRate: 1
   isExplosive: 1
+  rocketOBJ: {fileID: 5692584186449889247, guid: 0d49296141dd971488e58875f3285338, type: 3}
+  RocketPos: {fileID: 1211897931}
+--- !u!1 &1211897930
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1211897931}
+  m_Layer: 0
+  m_Name: RocketPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1211897931
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1211897930}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1.77}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 963194228}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1399342846
 GameObject:
   m_ObjectHideFlags: 0
@@ -1106,7 +1142,7 @@ GameObject:
   - component: {fileID: 1475984974}
   - component: {fileID: 1475984973}
   m_Layer: 0
-  m_Name: PlayerTempModel
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1949,6 +1985,8 @@ MonoBehaviour:
   range: 300
   FireRate: 0.8
   isExplosive: 0
+  rocketOBJ: {fileID: 0}
+  RocketPos: {fileID: 0}
 --- !u!1 &2037148302
 GameObject:
   m_ObjectHideFlags: 0

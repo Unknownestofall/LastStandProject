@@ -14,12 +14,16 @@ public class Gun : MonoBehaviour
     float _canFire= .2f;
 
     [SerializeField] bool isExplosive;
+    [SerializeField] GameObject rocketOBJ;
+    [SerializeField] Transform RocketPos;
 
     Camera _camera;
+    Player _player;
     // Start is called before the first frame update
     void Start()
     {
         _camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        _player = GameObject.Find("Player").GetComponent<Player>();
     }
 
     // Update is called once per frame
@@ -36,7 +40,13 @@ public class Gun : MonoBehaviour
                 }
                 curAmmoInMag--;
             }
+        }else if(isExplosive && canShoot()) {
+            if (curAmmoInMag > 0) {
+                GameObject rocket = Instantiate(rocketOBJ, RocketPos.transform.position ,_camera.transform.rotation);
+                rocket.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(0, 0, 3000));
+            }
         }
+
     }
     bool canShoot() { 
         if(Time.time > _canFire) { 
