@@ -14,16 +14,18 @@ public class Player : MonoBehaviour
     [SerializeField] float JumpForce;
 
     [SerializeField] GameObject[] gunInventory;
-    [SerializeField] float gunSwitchTime;
+    float _gunSwitchTime = 0;
     float _canSwitchGuns = .25f;
     [SerializeField] int curGunSelected;
 
     Gun _gun;
     Rigidbody _rb;
+    PlayerCam _cam;
     // Start is called before the first frame update
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        _cam = GameObject.Find("Main Camera").GetComponent<PlayerCam>();
     }
 
     // Update is called once per frame
@@ -32,9 +34,10 @@ public class Player : MonoBehaviour
         PlayerFunctions();
         stateTracker();
     }
-    void PlayerFunctions() {
+    void FixedUpdate(){
         Movement();
-
+    }
+    void PlayerFunctions() {
         if(Input.GetKeyDown(KeyCode.Space) && onGround()) { 
             Jump();
         }if(Input.GetKey(KeyCode.LeftShift)) {
@@ -51,6 +54,10 @@ public class Player : MonoBehaviour
             _gun.shoot();
         }if (Input.GetKeyDown(KeyCode.R)) { 
             _gun.Reload();
+        }
+        if (Input.GetKeyDown(KeyCode.E) && _cam.checkForInteractable()) {
+            AmmoCrate ammoCrate = GameObject.Find("ammoCrate").GetComponent<AmmoCrate>();
+            ammoCrate.onInteract();
         }
 
     }
@@ -100,7 +107,7 @@ public class Player : MonoBehaviour
     }
     bool canSwitchGuns() { 
         if(Time.time > _canSwitchGuns) { 
-            _canSwitchGuns = Time.time + gunSwitchTime;
+            _canSwitchGuns = Time.time + _gunSwitchTime;
             return true;
         }return false;
     }
@@ -112,5 +119,8 @@ public class Player : MonoBehaviour
                 gunInventory[i].SetActive(false);
             }
         }
+    }
+    public void ReceiveAmmo(){
+        gunInventory[curGunSelected].GetComponent<Gun>().restockAmmo();
     }
 }

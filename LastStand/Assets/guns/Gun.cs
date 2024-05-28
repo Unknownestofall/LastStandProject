@@ -7,6 +7,7 @@ public class Gun : MonoBehaviour
     [SerializeField] int curAmmoInMag;
     [SerializeField] int totalAmmoInMag;
     [SerializeField] int maxAmmo;
+    int _baseAmmo;
 
     [SerializeField] int range;
 
@@ -24,6 +25,8 @@ public class Gun : MonoBehaviour
     {
         _camera = GameObject.Find("Main Camera").GetComponent<Camera>();
         _player = GameObject.Find("Player").GetComponent<Player>();
+
+        _baseAmmo = maxAmmo;
     }
 
     // Update is called once per frame
@@ -44,6 +47,7 @@ public class Gun : MonoBehaviour
             if (curAmmoInMag > 0) {
                 GameObject rocket = Instantiate(rocketOBJ, RocketPos.transform.position ,_camera.transform.rotation);
                 rocket.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(0, 0, 3000));
+                curAmmoInMag--;
             }
         }
 
@@ -55,6 +59,15 @@ public class Gun : MonoBehaviour
         }return false;
     }
     public void Reload() { 
-        curAmmoInMag = totalAmmoInMag;
+        int bulletsToReload = totalAmmoInMag - curAmmoInMag;
+        if (maxAmmo >= bulletsToReload) {
+            curAmmoInMag += bulletsToReload;
+            maxAmmo -= bulletsToReload;
+        }
+        else {
+            curAmmoInMag = maxAmmo;
+            maxAmmo -= maxAmmo;
+        }
     }
+    public void restockAmmo() =>maxAmmo = _baseAmmo;
 }
