@@ -20,11 +20,13 @@ public class Gun : MonoBehaviour
 
     Camera _camera;
     Player _player;
+    uiManager ui;
     // Start is called before the first frame update
     void Start()
     {
         _camera = GameObject.Find("Main Camera").GetComponent<Camera>();
         _player = GameObject.Find("Player").GetComponent<Player>();
+        ui = GameObject.Find("UI").GetComponent<uiManager>();
 
         _baseAmmo = maxAmmo;
     }
@@ -32,7 +34,7 @@ public class Gun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        ui.updateAmmo(curAmmoInMag, maxAmmo);
     }
     public void shoot() {
         if (!isExplosive && canShoot()){ 
@@ -41,6 +43,7 @@ public class Gun : MonoBehaviour
                 if(Physics.Raycast(_camera.transform.position, _camera.transform.forward, out hit, range)) {
                     Debug.Log(hit.transform.name);
                 }
+                ui.updateAmmo(curAmmoInMag, maxAmmo);
                 curAmmoInMag--;
             }
         }else if(isExplosive && canShoot()) {
@@ -48,6 +51,7 @@ public class Gun : MonoBehaviour
                 GameObject rocket = Instantiate(rocketOBJ, RocketPos.transform.position ,_camera.transform.rotation);
                 rocket.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(0, 0, 3000));
                 curAmmoInMag--;
+                ui.updateAmmo(curAmmoInMag, maxAmmo);
             }
         }
 

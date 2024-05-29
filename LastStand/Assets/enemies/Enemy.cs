@@ -1,0 +1,52 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;
+
+public class Enemy : MonoBehaviour
+{
+    [SerializeField] GameObject target;
+    [SerializeField] float rangeAwayFromPlayer;
+    [SerializeField] float timeBetweenShots;
+    [SerializeField] GameObject projectile;
+    bool _hasAttacked;
+
+    [SerializeField] enum enemyState { chasing, attacking }
+    [SerializeField] enemyState state;
+
+    NavMeshAgent agent;
+    // Start is called before the first frame update
+    void Start()
+    {
+        agent = GetComponent<NavMeshAgent>();
+        target = GameObject.Find("Player");
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        handleState();
+    }
+    void handleState() {
+        float dist = Vector3.Distance(transform.position, target.transform.position);
+        if (dist > rangeAwayFromPlayer) {
+            ChasePlayer();
+        }else AttackPlayer();
+    }
+    void ChasePlayer() {
+        agent.SetDestination(target.transform.position);
+    }
+    void AttackPlayer() { 
+        agent.SetDestination(transform.position);
+        transform.LookAt(target.transform.position);
+        if (!_hasAttacked) {
+            Rigidbody rb = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
+            rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
+            _hasAttacked = true;
+            Invoke(nameof(resetAttack), timeBetweenShots);
+        }
+    }
+    void resetAttack() { 
+        _hasAttacked = false;
+    }
+}

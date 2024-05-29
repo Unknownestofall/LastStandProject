@@ -18,14 +18,18 @@ public class Player : MonoBehaviour
     float _canSwitchGuns = .25f;
     [SerializeField] int curGunSelected;
 
+    [SerializeField] float curHP, maxHP;
+
     Gun _gun;
     Rigidbody _rb;
     PlayerCam _cam;
+    uiManager ui;
     // Start is called before the first frame update
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
         _cam = GameObject.Find("Main Camera").GetComponent<PlayerCam>();
+        ui = GameObject.Find("UI").GetComponent<uiManager>();
     }
 
     // Update is called once per frame
@@ -33,6 +37,7 @@ public class Player : MonoBehaviour
     {
         PlayerFunctions();
         stateTracker();
+        TrackHp();
     }
     void FixedUpdate(){
         Movement();
@@ -122,5 +127,12 @@ public class Player : MonoBehaviour
     }
     public void ReceiveAmmo(){
         gunInventory[curGunSelected].GetComponent<Gun>().restockAmmo();
+    }
+    void TrackHp() { 
+        float hp = curHP /maxHP;
+        ui.updateHealth(hp);
+    }
+    void Damage(float dmgTaken){
+        curHP -= dmgTaken;
     }
 }
