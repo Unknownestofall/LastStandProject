@@ -13,6 +13,7 @@ public class Gun : MonoBehaviour
 
     [SerializeField] float FireRate;
     float _canFire= .2f;
+    [SerializeField] int bulletDMG;
 
     [SerializeField] bool isExplosive;
     [SerializeField] GameObject rocketOBJ;
@@ -41,7 +42,10 @@ public class Gun : MonoBehaviour
             if(curAmmoInMag > 0) { 
                 RaycastHit hit;
                 if(Physics.Raycast(_camera.transform.position, _camera.transform.forward, out hit, range)) {
-                    Debug.Log(hit.transform.name);
+                    Enemy en = hit.transform.GetComponent<Enemy>();
+                    if (en != null) {
+                        en.Damage(bulletDMG);
+                    }
                 }
                 ui.updateAmmo(curAmmoInMag, maxAmmo);
                 curAmmoInMag--;

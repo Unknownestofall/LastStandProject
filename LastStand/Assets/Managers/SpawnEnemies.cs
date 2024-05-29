@@ -75,4 +75,5 @@ public class SpawnEnemies : MonoBehaviour
                 break;
         }
     }
+    public void EnemyKilled() => enemiesKilled++;
 }

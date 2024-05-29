@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] enum enemyState { chasing, attacking }
     [SerializeField] enemyState state;
 
+    [SerializeField] int health;
     NavMeshAgent agent;
     // Start is called before the first frame update
     void Start()
@@ -48,5 +49,14 @@ public class Enemy : MonoBehaviour
     }
     void resetAttack() { 
         _hasAttacked = false;
+    }
+    public void Damage(int dmg) {
+        health -= dmg;
+        if(health <= 0) {
+            SpawnEnemies spawn = GameObject.Find("Spawner").GetComponent<SpawnEnemies>();
+            spawn.EnemyKilled();
+            Destroy(this.gameObject);
+        }
+
     }
 }

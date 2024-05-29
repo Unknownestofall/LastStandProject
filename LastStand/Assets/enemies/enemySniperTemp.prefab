@@ -148,3 +148,4 @@ MonoBehaviour:
   timeBetweenShots: 1
   projectile: {fileID: 7960679108992050659, guid: 2ca15321c0ceffe428fbf21de0a7cef0, type: 3}
   state: 0
+  health: 70
