@@ -41,8 +41,8 @@ public class Enemy : MonoBehaviour
         agent.SetDestination(transform.position);
         transform.LookAt(target.transform.position);
         if (!_hasAttacked) {
-            Rigidbody rb = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
-            rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
+            Rigidbody bullet = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
+            bullet.velocity = target.transform.position - transform.position;
             _hasAttacked = true;
             Invoke(nameof(resetAttack), timeBetweenShots);
         }

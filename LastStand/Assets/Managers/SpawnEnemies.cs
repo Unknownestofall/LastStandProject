@@ -14,11 +14,12 @@ public class SpawnEnemies : MonoBehaviour
     [SerializeField] int curWave, enemiesKilled;
 
     uiManager ui;
-    
+    GameManager _gm;
     // Start is called before the first frame update
     void Start()
     {
         ui = GameObject.Find("UI").GetComponent<uiManager>();
+        _gm = GameObject.Find("GM").GetComponent<GameManager>();
         StartCoroutine(StartSpawningEnemies());
     }
 
@@ -26,6 +27,9 @@ public class SpawnEnemies : MonoBehaviour
     void Update()
     {
         StartNextWave();
+        if(curWave == 21) {
+            _gm.isVictory();
+        }
     }
     IEnumerator StartSpawningEnemies() {
         while (!isWaveOver()) { 
@@ -54,6 +58,7 @@ public class SpawnEnemies : MonoBehaviour
     void StartNextWave() {
         if (canStartWave()) {
             enemiesKilled = 0;
+            curEnemiesSpawned = 0;
             curWave++;
             updateEnemiesAfterWave();
             StartCoroutine(StartSpawningEnemies());
@@ -67,7 +72,6 @@ public class SpawnEnemies : MonoBehaviour
                 break;
             case 21:
                 numbOfEnemiesOnWave = 0;
-                Debug.Log("end game");
                 break;
             default:
                 numbOfEnemiesOnWave += 20;

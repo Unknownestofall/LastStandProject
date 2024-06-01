@@ -844,7 +844,7 @@ GameObject:
   - component: {fileID: 2942125840294481914}
   m_Layer: 0
   m_Name: Tank
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -938,7 +938,7 @@ MonoBehaviour:
   target: {fileID: 0}
   rangeAwayFromPlayer: 10
   timeBetweenShots: 2
-  projectile: {fileID: 5692584186449889247, guid: 0d49296141dd971488e58875f3285338, type: 3}
+  projectile: {fileID: 7960679108992050659, guid: 2ca15321c0ceffe428fbf21de0a7cef0, type: 3}
   state: 0
   health: 120
 --- !u!1 &7618383842257912730

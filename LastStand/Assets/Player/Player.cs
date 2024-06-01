@@ -14,8 +14,6 @@ public class Player : MonoBehaviour
     [SerializeField] float JumpForce;
 
     [SerializeField] GameObject[] gunInventory;
-    float _gunSwitchTime = 0;
-    float _canSwitchGuns = .25f;
     [SerializeField] int curGunSelected;
 
     [SerializeField] float curHP, maxHP;
@@ -24,12 +22,14 @@ public class Player : MonoBehaviour
     Rigidbody _rb;
     PlayerCam _cam;
     uiManager ui;
+    GameManager _gm;
     // Start is called before the first frame update
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
         _cam = GameObject.Find("Main Camera").GetComponent<PlayerCam>();
         ui = GameObject.Find("UI").GetComponent<uiManager>();
+        _gm = GameObject.Find("GM").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -89,32 +89,27 @@ public class Player : MonoBehaviour
     bool onGround() { 
         RaycastHit hit;
         if (Physics.Raycast(transform.position, Vector3.down, out hit, 1.1f)) {
-            if (hit.transform.CompareTag("floor")) { 
+            if (hit.transform.CompareTag("floor")) {
+                _rb.drag = 1;
                 return true;
             }
-        }return false;
+        }
+        _rb.drag = 0;
+        return false;
     }
     void Run() => state = PlayerState.running;
     void switchWeaponSelected(){
         Vector2 scrollWheelGunSwitch = Input.mouseScrollDelta.normalized;
-        if (canSwitchGuns()){ 
-            if(scrollWheelGunSwitch.y > 0) {
-                curGunSelected++;
-            }else if(scrollWheelGunSwitch.y < 0){ 
-                curGunSelected--;
-            }
+        if(scrollWheelGunSwitch.y > 0) {
+            curGunSelected++;
+        }else if(scrollWheelGunSwitch.y < 0){ 
+            curGunSelected--;
         }
         if(curGunSelected < 0) { 
             curGunSelected = 2;
         }else if (curGunSelected > 2) {
             curGunSelected = 0;
         }
-    }
-    bool canSwitchGuns() { 
-        if(Time.time > _canSwitchGuns) { 
-            _canSwitchGuns = Time.time + _gunSwitchTime;
-            return true;
-        }return false;
     }
     void DisplayWeapon() { 
         for(int i = 0;i < gunInventory.Length;i++) { 
@@ -132,7 +127,10 @@ public class Player : MonoBehaviour
         float hp = curHP /maxHP;
         ui.updateHealth(hp);
     }
-    void Damage(float dmgTaken){
+    public void Damage(float dmgTaken){
         curHP -= dmgTaken;
+        if(curHP <= 1) {
+            _gm.isGameOver();
+        }
     }
 }

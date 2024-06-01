@@ -9,6 +9,9 @@ public class Gun : MonoBehaviour
     [SerializeField] int maxAmmo;
     int _baseAmmo;
 
+    [SerializeField] AudioClip shootSFX;
+    [SerializeField] AudioClip reloadSFX;
+
     [SerializeField] int range;
 
     [SerializeField] float FireRate;
@@ -47,13 +50,14 @@ public class Gun : MonoBehaviour
                         en.Damage(bulletDMG);
                     }
                 }
+                if(shootSFX != null) AudioSource.PlayClipAtPoint(shootSFX, transform.position,.3f);
                 ui.updateAmmo(curAmmoInMag, maxAmmo);
                 curAmmoInMag--;
             }
         }else if(isExplosive && canShoot()) {
             if (curAmmoInMag > 0) {
                 GameObject rocket = Instantiate(rocketOBJ, RocketPos.transform.position ,_camera.transform.rotation);
-                rocket.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(0, 0, 3000));
+                rocket.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(0, 0, 1000));
                 curAmmoInMag--;
                 ui.updateAmmo(curAmmoInMag, maxAmmo);
             }
@@ -76,6 +80,7 @@ public class Gun : MonoBehaviour
             curAmmoInMag = maxAmmo;
             maxAmmo -= maxAmmo;
         }
+        AudioSource.PlayClipAtPoint(reloadSFX, transform.position);
     }
     public void restockAmmo() =>maxAmmo = _baseAmmo;
 }

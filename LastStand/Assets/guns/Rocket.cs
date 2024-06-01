@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class Rocket : MonoBehaviour
 {
-    BoxCollider _col;
+    [SerializeField] int DMG;
     void Start()
     {
-        _col = GetComponent<BoxCollider>();    
+         
     }
     void Update()
     {
         Destroy(this.gameObject, 5f);
     }
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
-        if (collision != null) {
-            _col.enabled = true;
+        if (other.CompareTag("Enemy")) {
+            other.GetComponent<Enemy>().Damage(DMG);
             Destroy(this.gameObject);
         }
     }
