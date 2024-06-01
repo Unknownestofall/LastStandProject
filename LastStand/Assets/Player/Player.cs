@@ -57,10 +57,11 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButton(0)) {
             _gun = gunInventory[curGunSelected].GetComponent<Gun>();
             _gun.shoot();
+        }else if (Input.GetMouseButtonUp(0)) { 
+            _gun.onStopShooting();
         }if (Input.GetKeyDown(KeyCode.R)) { 
             _gun.Reload();
-        }
-        if (Input.GetKeyDown(KeyCode.E) && _cam.checkForInteractable()) {
+        } if (Input.GetKeyDown(KeyCode.E) && _cam.checkForInteractable()) {
             AmmoCrate ammoCrate = GameObject.Find("ammoCrate").GetComponent<AmmoCrate>();
             ammoCrate.onInteract();
         }
