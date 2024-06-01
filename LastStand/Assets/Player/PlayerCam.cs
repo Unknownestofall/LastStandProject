@@ -12,11 +12,13 @@ public class PlayerCam : MonoBehaviour
     float yRotate;
 
     Camera _cam;
+    uiManager _ui;
     // Start is called before the first frame update
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         _cam = GetComponent<Camera>();
+        _ui = GameObject.Find("UI").GetComponent<uiManager>();
     }
 
     // Update is called once per frame
@@ -41,9 +43,11 @@ public class PlayerCam : MonoBehaviour
         RaycastHit hit;
         if(Physics.Raycast(_cam.transform.position, _cam.transform.forward, out hit, 3f)) { 
             if(hit.transform.tag == "AmmoCrate") {
-                Debug.Log("canInteract");
+                _ui.updateInteractText("press E to refill ammo");
                 return true;
             }
-        }return false;
+        }
+        _ui.updateInteractText(null);
+        return false;
     }
 }
