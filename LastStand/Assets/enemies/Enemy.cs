@@ -34,9 +34,7 @@ public class Enemy : MonoBehaviour
             ChasePlayer();
         }else AttackPlayer();
     }
-    void ChasePlayer() {
-        agent.SetDestination(target.transform.position);
-    }
+    void ChasePlayer() => agent.SetDestination(target.transform.position);
     void AttackPlayer() { 
         agent.SetDestination(transform.position);
         transform.LookAt(target.transform.position);
@@ -47,9 +45,7 @@ public class Enemy : MonoBehaviour
             Invoke(nameof(resetAttack), timeBetweenShots);
         }
     }
-    void resetAttack() { 
-        _hasAttacked = false;
-    }
+    void resetAttack() => _hasAttacked = false;
     public void Damage(int dmg) {
         health -= dmg;
         if(health <= 0) {
@@ -57,6 +53,5 @@ public class Enemy : MonoBehaviour
             spawn.EnemyKilled();
             Destroy(this.gameObject);
         }
-
     }
 }

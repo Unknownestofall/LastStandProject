@@ -8,7 +8,7 @@ public class SpawnEnemies : MonoBehaviour
     [SerializeField] Transform[] enemySpawnPos;
     [SerializeField] Transform container;
 
-    [SerializeField] int timeBetweenEnemySpawn,timeBetweenWaves;
+    [SerializeField] float timeBetweenEnemySpawn,timeBetweenWaves;
 
     [SerializeField] int numbOfEnemiesOnWave,curEnemiesSpawned;
     [SerializeField] int curWave, enemiesKilled;
@@ -74,7 +74,7 @@ public class SpawnEnemies : MonoBehaviour
                 numbOfEnemiesOnWave = 0;
                 break;
             default:
-                numbOfEnemiesOnWave += 20;
+                numbOfEnemiesOnWave += 10;
                 ui.updateWave(curWave);
                 break;
         }

@@ -16,8 +16,7 @@ public class bulletBehaviour : MonoBehaviour
     {
         Destroy(this.gameObject, 10f);
     }
-    void OnTriggerEnter(Collider other)
-    {
+    void OnTriggerEnter(Collider other){
         if (other.CompareTag("Player")) {
             other.GetComponent<Player>().Damage(bulletDmg);
             Destroy(this.gameObject);

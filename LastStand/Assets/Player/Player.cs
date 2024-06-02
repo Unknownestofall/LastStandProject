@@ -134,4 +134,11 @@ public class Player : MonoBehaviour
             _gm.isGameOver();
         }
     }
+    public void regenHealth(float hpToReceive) {
+        Debug.Log("start regen");
+        curHP += hpToReceive * Time.deltaTime;
+        if (curHP > maxHP) {
+            curHP = 100;
+        }
+    }
 }
